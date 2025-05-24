@@ -2,7 +2,7 @@
 
 ### 1. Start Kafka & Zookeeper
 
-Make sure Kafka and Zookeeper are running via Homebrew:
+Make sure Kafka and Zookeeper are running via Homebrew: (run on the separate terminal)
 
 ```bash
 brew services start zookeeper
