@@ -40,7 +40,7 @@ streamlit run 4_streamlit_dashboard.py
 
 ---
 
-## 📄 What Each Script Does
+## What Each Script Does
 
 | Script                             | Description                                                                           |
 | ---------------------------------- | ------------------------------------------------------------------------------------- |
