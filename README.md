@@ -1,18 +1,8 @@
-##  What Each Script Does
-
-| Script                             | Description                                                                           |
-| ---------------------------------- | ------------------------------------------------------------------------------------- |
-| `1_setup_postgres_transactions.py` | Generates and inserts transaction data into PostgreSQL using API FX rates             |
-| `2_fx_rate_producer.py`            | Simulates FX rate streaming via Kafka                                                 |
-| `3_fx_rate_consumer.py`            | Listens to Kafka and saves FX rates to local JSON                                     |
-| `5_convert_fx_live.py`             | Converts transaction amounts to USD using latest FX from JSON                         |
-| `4_streamlit_dashboard.py`         | Displays real-time revenue insights in Streamlit using `transactions_converted` table |
-
-# # How to Run the Project
+#  How to Run the Project
 
 ### 1. Start Kafka & Zookeeper
 
-Make sure Kafka and Zookeeper are running via Homebrew:
+Make sure Kafka and Zookeeper are running via Homebrew: (run on the separate terminal)
 
 ```bash
 brew services start zookeeper
@@ -48,4 +38,15 @@ This recalculates USD using latest FX rates from Kafka and stores in a new table
 streamlit run 4_streamlit_dashboard.py
 ```
 
---
+---
+
+## What Each Script Does
+
+| Script                             | Description                                                                           |
+| ---------------------------------- | ------------------------------------------------------------------------------------- |
+| `1_setup_postgres_transactions.py` | Generates and inserts transaction data into PostgreSQL using API FX rates             |
+| `2_fx_rate_producer.py`            | Simulates FX rate streaming via Kafka                                                 |
+| `3_fx_rate_consumer.py`            | Listens to Kafka and saves FX rates to local JSON                                     |
+| `5_convert_fx_live.py`             | Converts transaction amounts to USD using latest FX from JSON                         |
+| `4_streamlit_dashboard.py`         | Displays real-time revenue insights in Streamlit using `transactions_converted` table |
+

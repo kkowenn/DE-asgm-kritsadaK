@@ -67,13 +67,13 @@ def generate_transaction_data(n=10):
 
 # === Step 5: Create and insert ===
 df = generate_transaction_data()
-print("\n✅ Simulated Data:")
+print("\n Simulated Data:")
 print(df.head())
 
 with engine.begin() as conn:
     conn.execute(text(create_table_sql))
     df.to_sql('transactions', con=conn, if_exists='append', index=False)
-    print(f"\n✅ Inserted {len(df)} rows into 'transactions' table.")
+    print(f"\n Inserted {len(df)} rows into 'transactions' table.")
 
 # === Step 6: Query hourly data ===
 query = """
@@ -82,5 +82,5 @@ WHERE timestamp >= NOW() - INTERVAL '1 hour'
 ORDER BY timestamp DESC;
 """
 df_hourly = pd.read_sql(query, engine)
-print("\n✅ Hourly Transactions (Last 1 Hour):")
+print("\n Hourly Transactions (Last 1 Hour):")
 print(df_hourly)
