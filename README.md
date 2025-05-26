@@ -1,46 +1,8 @@
-#  How to Run the Project
+# Real-Time Revenue Dashboard (Data Engineering Project)
 
-### 1. Start Kafka & Zookeeper
+A mini data engineering pipeline that streams FX rates via Kafka, stores transactions in PostgreSQL, converts them to USD, and visualizes insights with Streamlit.
 
-Make sure Kafka and Zookeeper are running via Homebrew: (run on the separate terminal)
-
-```bash
-brew services start zookeeper
-brew services start kafka
-```
-
-### 2. Run FX Rate Streaming
-
-```bash
-python 2_fx_rate_producer.py    # Simulates live FX rate updates
-python 3_fx_rate_consumer.py    # Saves FX data to fx_rate_data/fx_rates_kafka.json
-```
-
-### 3. Simulate Transactions
-
-```bash
-python 1_setup_postgres_transactions.py
-```
-
-This generates fake transactions and inserts them into PostgreSQL.
-
-### 4. Convert to USD Using Real-Time FX
-
-```bash
-python 5_convert_fx_live.py
-```
-
-This recalculates USD using latest FX rates from Kafka and stores in a new table `transactions_converted`.
-
-### 5. Launch the Dashboard
-
-```bash
-streamlit run 4_streamlit_dashboard.py
-```
-
----
-
-## What Each Script Does
+## Components Overview
 
 | Script                             | Description                                                                           |
 | ---------------------------------- | ------------------------------------------------------------------------------------- |
@@ -50,3 +12,60 @@ streamlit run 4_streamlit_dashboard.py
 | `5_convert_fx_live.py`             | Converts transaction amounts to USD using latest FX from JSON                         |
 | `4_streamlit_dashboard.py`         | Displays real-time revenue insights in Streamlit using `transactions_converted` table |
 
+---
+
+##  How to Run the Project
+
+### 0. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 1. Start Kafka
+
+```bash
+kafka-topics --list --bootstrap-server localhost:9092
+```
+
+### 2. Simulate Transactions
+
+```bash
+python 1_setup_postgres_transactions.py
+```
+
+### 3. Stream FX Rates
+
+```bash
+python 2_fx_rate_producer.py
+
+# In another terminal
+
+python 3_fx_rate_consumer.py
+```
+
+### 4. Convert to USD
+
+```bash
+python 4_convert_fx_live.py
+```
+
+### 5. Launch Dashboard
+
+```bash
+streamlit run 5_streamlit_dashboard.py
+```
+
+--- 
+
+## PostgreSQL Tables
+
+```bash
+revenue_dashboard=# \dt
+                     List of relations
+ Schema |          Name          | Type  |      Owner      
+--------+------------------------+-------+-----------------
+ public | transactions           | table | kritsadakruapat
+ public | transactions_converted | table | kritsadakruapat
+
+```
