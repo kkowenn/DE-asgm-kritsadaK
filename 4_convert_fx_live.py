@@ -1,6 +1,7 @@
 import pandas as pd
 import json
 from sqlalchemy import create_engine, text
+import os
 
 # === Step 1: Load FX Rates ===
 print("Step 1: Loading FX rates from JSON")
@@ -14,29 +15,40 @@ except Exception as e:
     print("Step 1.2: Failed to load FX rates:", e)
     fx_rates = {}
 
-# === Step 2: Connect to PostgreSQL ===
-print("Step 2: Connecting to PostgreSQL")
-DB_USER = 'kritsadakruapat'
-DB_PASS = 'NewSecurePassword123!'
-DB_HOST = 'localhost'
-DB_PORT = '5432'
-DB_NAME = 'revenue_dashboard'
+# # w/o docker
+# === Step 2: Connect to PostgreSQL === 
+# print("Step 2: Connecting to PostgreSQL")
+# DB_USER = 'kritsadakruapat'
+# DB_PASS = 'NewSecurePassword123!'
+# DB_HOST = 'localhost'
+# DB_PORT = '5432'
+# DB_NAME = 'revenue_dashboard'
 
+# engine = create_engine(f'postgresql+psycopg2://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}')
+# print("Step 2.1: Connected to database")
+
+DB_USER = os.getenv("DB_USER", "kritsadakruapat")
+DB_PASS = os.getenv("DB_PASS", "NewSecurePassword123!")
+DB_HOST = os.getenv("DB_HOST", "postgres")
+DB_PORT = os.getenv("DB_PORT", "5432")
+DB_NAME = os.getenv("DB_NAME", "revenue_dashboard")
+
+KAFKA_BOOTSTRAP_SERVER = os.getenv("KAFKA_BOOTSTRAP_SERVER", "localhost:9092")  # will be 'kafka:9092'
 engine = create_engine(f'postgresql+psycopg2://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}')
 print("Step 2.1: Connected to database")
 
+
 # === Step 3: Read Transactions ===
 print("Step 3: Reading recent transactions from database")
-
 query = """
 SELECT * FROM transactions
 WHERE timestamp >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Bangkok') - INTERVAL '24 hours';
 """
-
 df = pd.read_sql(query, engine)
 print(f"Step 3.1: Loaded {len(df)} transactions")
+
 if df.empty:
-    print("No recent transactions found. Exiting early.")
+    print("No recent transactions found. Exiting.")
     exit(0)
 
 # === Step 4: Convert to USD ===

@@ -14,7 +14,7 @@ A mini data engineering pipeline that streams FX rates via Kafka, stores transac
 
 ---
 
-##  How to Run the Project
+##  How to Run the Project manually using Python scripts.
 
 ### 0. Install Dependencies
 
@@ -69,3 +69,18 @@ revenue_dashboard=# \dt
  public | transactions_converted | table | kritsadakruapat
 
 ```
+
+## How to Run the Project Automaicalluy
+
+You can run the project with **Docker Compose** 
+
+---
+
+###  Run with Docker 
+
+> Automatically runs PostgreSQL, Kafka, Streamlit app, and Python scripts
+
+### 1. Build and launch services:
+
+```bash
+./run_all.sh

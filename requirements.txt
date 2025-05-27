@@ -1,8 +1,9 @@
 pandas
 numpy
 kafka-python
-json
 requests
 sqlalchemy
 streamlit
 altair
+psycopg2-binary
+streamlit-autorefresh

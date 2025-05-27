@@ -4,12 +4,24 @@ import requests
 from datetime import datetime, timedelta
 from sqlalchemy import create_engine, text
 
-# === Step 1: PostgreSQL connection details ===
-DB_USER = 'kritsadakruapat'
-DB_PASS = 'NewSecurePassword123!'
-DB_HOST = 'localhost'
-DB_PORT = '5432'
-DB_NAME = 'revenue_dashboard'
+# # w/o docker
+# # === Step 1: PostgreSQL connection details ===
+# DB_USER = 'kritsadakruapat'
+# DB_PASS = 'NewSecurePassword123!'
+# DB_HOST = 'localhost'
+# DB_PORT = '5432'
+# DB_NAME = 'revenue_dashboard'
+
+# engine = create_engine(
+#     f'postgresql+psycopg2://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+# )
+
+import os
+DB_USER = os.getenv("DB_USER", "kritsadakruapat")
+DB_PASS = os.getenv("DB_PASS", "NewSecurePassword123!")
+DB_HOST = os.getenv("DB_HOST", "postgres")
+DB_PORT = os.getenv("DB_PORT", "5433")
+DB_NAME = os.getenv("DB_NAME", "revenue_dashboard")
 
 engine = create_engine(
     f'postgresql+psycopg2://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'

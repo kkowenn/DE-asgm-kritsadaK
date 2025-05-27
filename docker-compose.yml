@@ -1,0 +1,55 @@
+services:
+  postgres:
+      image: postgres:14
+      container_name: revenue_postgres
+      environment:
+        POSTGRES_DB: revenue_dashboard
+        POSTGRES_USER: kritsadakruapat
+        POSTGRES_PASSWORD: NewSecurePassword123!
+      ports:
+        - "5433:5432"  
+      volumes:
+        - pgdata:/var/lib/postgresql/data
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - '22181:2181'
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    depends_on:
+      - zookeeper
+    ports:
+      - "29092:9092"  # ← maps internal Kafka port 9092 to host port 29092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+
+  streamlit_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: revenue_dashboard_app
+    ports:
+      - "8501:8501"
+    depends_on:
+      - kafka
+      - postgres
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: kritsadakruapat
+      DB_PASS: NewSecurePassword123!
+      DB_NAME: revenue_dashboard
+    volumes:
+      - .:/app
+
+volumes:
+  pgdata:
