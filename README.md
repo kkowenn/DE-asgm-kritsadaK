@@ -2,6 +2,8 @@
 
 A mini data engineering pipeline that streams FX rates via Kafka, stores transactions in PostgreSQL, converts them to USD, and visualizes insights with Streamlit.
 
+![diagram](diagram)
+
 ## Components Overview
 
 | Script                             | Description                                                                           |
@@ -12,7 +14,17 @@ A mini data engineering pipeline that streams FX rates via Kafka, stores transac
 | `5_convert_fx_live.py`             | Converts transaction amounts to USD using latest FX from JSON                         |
 | `4_streamlit_dashboard.py`         | Displays real-time revenue insights in Streamlit using `transactions_converted` table |
 
----
+
+## How to Run the Project Automaicalluy
+
+###  Run with Docker : Automatically runs PostgreSQL, Kafka, Streamlit app, and Python scripts
+
+### 1. Build and launch services:
+
+```bash
+./run_all.sh
+```
+
 
 ##  How to Run the Project manually using Python scripts.
 
@@ -38,9 +50,10 @@ python 1_setup_postgres_transactions.py
 
 ```bash
 python 2_fx_rate_producer.py
+```
 
-# In another terminal
-
+```bash
+# Another terminal !!
 python 3_fx_rate_consumer.py
 ```
 
@@ -56,8 +69,6 @@ python 4_convert_fx_live.py
 streamlit run 5_streamlit_dashboard.py
 ```
 
---- 
-
 ## PostgreSQL Tables
 
 ```bash
@@ -70,17 +81,4 @@ revenue_dashboard=# \dt
 
 ```
 
-## How to Run the Project Automaicalluy
-
-You can run the project with **Docker Compose** 
-
----
-
-###  Run with Docker 
-
-> Automatically runs PostgreSQL, Kafka, Streamlit app, and Python scripts
-
-### 1. Build and launch services:
-
-```bash
-./run_all.sh
+http://localhost:8501
