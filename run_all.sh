@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Step 1: Starting Docker containers..."
-docker-compose up -d --build
+docker compose up -d --build
 
 echo "Waiting for services to be ready..."
 sleep 10
